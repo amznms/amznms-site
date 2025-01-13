@@ -1,4 +1,4 @@
-# How to Install ERPNext Version 15 in Ubuntu 22.04
+# How to Install ERPNext Version 14 in Ubuntu 20.04
 
 ```
 sudo apt-get update
