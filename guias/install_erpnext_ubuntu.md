@@ -1,6 +1,8 @@
 # How to Install ERPNext Version 15 in Ubuntu 22.04
 
-```sudo apt-get update```
+```
+sudo apt-get update
+```
 
 ```
 sudo adduser [frappe-user]
@@ -10,8 +12,11 @@ cd /home/[frappe-user]
 ```
 
 ubuntu 24 or debian 12
+
 sudo adduser [frappe-user] sudo
+
 su [frappe-user]
+
 cd /home/[frappe-user]
 
 
@@ -43,13 +48,21 @@ sudo mysql_secure_installation
 ```
 
 Enter current password for root: (Enter your SSH root user password)
+
 Switch to unix_socket authentication [Y/n]: Y
+
 Change the root password? [Y/n]: Y
+
 It will ask you to set new MySQL root password at this step. This can be different from the SSH root user password.
+
 Remove anonymous users? [Y/n] Y
+
 Disallow root login remotely? [Y/n]: N
+
 This is set as N because we might want to access the database from a remote server for using business analytics software like Metabase / PowerBI / Tableau, etc.
+
 Remove test database and access to it? [Y/n]: Y
+
 Reload privilege tables now? [Y/n]: Y
 
 ## Edit MYSQL default config file
@@ -73,6 +86,8 @@ em outras situacoes:
 substitua no arquivo seguinte:
 
 ```sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf```
+
+e depois:
 
 ```sudo systemctl restart mariadb```
 
@@ -98,9 +113,9 @@ em outras situacoes:
 
 ```sudo apt install pipx```
 
-```pip3 install frappe-bench```
+```pipx install frappe-bench```
 
-caso bench nao estiver no path, verifique
+caso **bench** nao estiver no path, verifique
 
 ```ls ~/.local/bin```
 or
@@ -114,13 +129,15 @@ nano ~/.bashrc
 export PATH=$PATH:~/.local/bin
 ```
 
-```source ~/.bashrc```
+```
+source ~/.bashrc
+```
 
 a partir de agora esteja em:
 
 ``` cd ~/```
 
-que e /home/[frappe-user]
+e /home/[frappe-user]
 
 ## Install Frappe Bench
 
@@ -146,7 +163,9 @@ bench get-app --branch version-15 erpnext
 
 ## Install all the apps on our site
 
-```bench --site [site-name] install-app erpnext```
+```
+bench --site [site-name] install-app erpnext
+```
 
 ## Install all the other apps
 
@@ -173,6 +192,7 @@ insira somente na primeira linha:
 
 por padrao:
 [SERVER IP:8000]
+
 [localhost:8000](localhost:8000)
 
 
@@ -310,7 +330,9 @@ $  bench --site default install-app posawesome
 bench get-app library  https://github.com/frappe/library_management.git
 ```
 
-```bench --site [site-name] install-app library_management```
+```
+bench --site [site-name] install-app library_management
+```
 
 ## lista site3
 
@@ -378,11 +400,13 @@ EDI
 
 
 [GUIA ERPNEXT ESPANHOL](https://github.com/sihaysistema/Guia-ERPNext/blob/master/Aprendiendo-a-usar-ERPNext.md)
+
 [GUIA ERPNEXT INGLES](https://github.com/sihaysistema/ERPNext-Guide/blob/master/ERPNext-Learning-Guide.md)
 
 
 # author
 
 Aldson Diego
+
 instagran: @aldsondiego
 
