@@ -13,12 +13,11 @@ cd /home/[frappe-user]
 
 ubuntu 24 or debian 12
 
+```
 sudo adduser [frappe-user] sudo
-
 su [frappe-user]
-
 cd /home/[frappe-user]
-
+```
 
 ## Install Required Packages
 
@@ -142,7 +141,7 @@ e /home/[frappe-user]
 ## Install Frappe Bench
 
 ```
-bench init --frappe-branch version-15 frappe-bench
+bench init --frappe-branch version-14 frappe-bench
 
 cd frappe-bench
 
@@ -158,7 +157,7 @@ chmod -R o+rx /home/[frappe-user]
 ```
 bench get-app payments
 
-bench get-app --branch version-15 erpnext
+bench get-app --branch version-14 erpnext
 ```
 
 ## Install all the apps on our site
@@ -193,7 +192,7 @@ insira somente na primeira linha:
 por padrao:
 [SERVER IP:8000]
 
-[localhost:8000](localhost:8000)
+[localhost:8000](http://localhost:8000)
 
 
 ## outras situacoes: troca de versao nodejs
