@@ -425,7 +425,7 @@ EDI
 ## instalar alguns app
 
 ```
-sudo apt-get install fail2ban```
+sudo apt-get install fail2ban
 ```
 ```
 sudo apt-get install nginx
@@ -497,6 +497,7 @@ server{
     ssl_prefer_server_ciphers on;
 }
 
+```
 ```
 sudo nano /etc/nginx/nginx.conf
 ```
