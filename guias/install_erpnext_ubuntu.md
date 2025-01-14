@@ -169,9 +169,9 @@ bench --site [site-name] install-app erpnext
 ## Install all the other apps
 
 ```
-bench --site [site-name] install-app hrms
+bench get-app hrms --branch version-14
 
-bench get-app hrms
+bench --site [site-name] install-app hrms
 ```
 
 O **hrms** pode listar erro de conexao com o redis-server
@@ -265,6 +265,22 @@ mysql -u root -p
 show databases;
 drop database id_do_banco;
 exit;
+```
+
+### MariaDB denied permission
+
+se ```bench new-site yousitename``` der erro, tente:
+
+```
+sudo mysql -u root
+mysql> SHOW DATABASES;
+mysql> USE mysql;
+mysql> UPDATE user SET plugin='mysql_native_password' WHERE 
+User='root';
+mysql> FLUSH PRIVILEGES;
+mysql> exit;
+
+sudo service mysql restart
 ```
 
 # modules
@@ -401,6 +417,142 @@ EDI
 [GUIA ERPNEXT ESPANHOL](https://github.com/sihaysistema/Guia-ERPNext/blob/master/Aprendiendo-a-usar-ERPNext.md)
 
 [GUIA ERPNEXT INGLES](https://github.com/sihaysistema/ERPNext-Guide/blob/master/ERPNext-Learning-Guide.md)
+
+
+# PRODUCTION
+
+
+## instalar alguns app
+
+```
+sudo apt-get install fail2ban```
+```
+```
+sudo apt-get install nginx
+```
+
+configure o site:
+
+```
+bench --site [site-name] enable-scheduler
+```
+```
+bench --site [site-name] set-maintenance-mode off
+```
+```
+sudo bench setup production [frappe-user]
+```
+
+```
+bench setup nginx
+```
+
+```
+sudo supervisorctl restart all sudo bench setup production [frappe-user]
+```
+
+Agora voce pode acessar o seu site erpnext pela porta :80
+
+
+## Certificado LetsEncrypt
+
+```
+sudo service nginx stop 
+```
+```
+sudo apt install certbot -y 
+```
+```
+sudo apt install certbot python3-certbot-nginx 
+```
+```
+sudo certbot certonly -a nginx -d yoursite.example.com 
+```
+
+Se ocorreu tudo certo, seu certificado esta em ```/etc/letsencrypt/live/```
+
+algumas mudancas devem serem feitas em /etc/nginx/conf.d/frappe-bench.conf
+
+```
+
+server{
+    listen 443 ssl;
+
+    server_name
+        yoursite.example.com
+        ;
+
+    root /home/frappeuser/frappe-bench/sites;
+
+    ssl_certificate   /etc/letsencrypt/live/yoursite.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/yoursite.example.com/privkey.pem;
+    ssl_session_timeout 5m;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_tickets off;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers EECDH+AESGCM:EDH+AESGCM;
+    ssl_ecdh_curve secp384r1;
+    ssl_prefer_server_ciphers on;
+}
+
+```
+sudo nano /etc/nginx/nginx.conf
+```
+
+na secao http
+
+```
+log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                  '$status $body_bytes_sent "$http_referer" '
+                  '"$http_user_agent" "$http_x_forwarded_for"';
+```
+
+## Colocar Segundo Site
+
+Em frappe-bench/ crie o novo site e instale erpnext e modulos
+
+```
+bench new-site site2.example.com
+
+bench --site site2.example.com install-app erpnext
+```
+
+gere o certificado
+```
+sudo certbot certonly -a nginx -d site2.example.com
+```
+
+faca uma copia e altere os dados:
+
+```
+sudo cp /etc/nginx/conf.d/frappe-bench.conf /etc/nginx/conf.d/site2.example.com.conf 
+```
+```
+sudo nano /etc/nginx/conf.d/site2.example.com.conf
+```
+altere algumas linhas
+```
+#upstream frappe-bench-frappe {
+#   server 127.0.0.1:8000 fail_timeout=0;
+#}
+
+#upstream frappe-bench-socketio-server {
+#   server 127.0.0.1:9000 fail_timeout=0;
+#}
+```
+```
+listen 443 ssl;
+```
+
+salve, depois reinicialize:
+
+```
+sudo service supervisor restart
+
+sudo service nginx restart
+```
 
 
 # author
