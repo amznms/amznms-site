@@ -454,7 +454,38 @@ sudo supervisorctl restart all sudo bench setup production [frappe-user]
 Agora voce pode acessar o seu site erpnext pela porta :80
 
 
+## Definir um dominio para o new-site criado 
+
+isso evita de voce ficar recirando nome de pastas longos
+
+```
+bench setup add-domain --site site1.local [new-domain-name]
+```
+
 ## Certificado LetsEncrypt
+
+```
+run sudo bench config dns_multitenant on
+
+but ensure that the sub domains are all pointing to the instance IP.
+
+and then run sudo bench setup lets-encrypt abs.dexciss.com
+
+repeat same for all sites
+
+```
+
+### Redirect all HTTP traffic to HTTPs
+
+```
+server {
+    listen 80;
+    server_name example.com;
+    rewrite ^/(.*) https://example.com/$1 permanent;
+}
+```
+
+## Certificado LetsEncrypt (antigo)
 
 ```
 sudo service nginx stop 
